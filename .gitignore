@@ -1,0 +1,21 @@
+# 二进制与编译产物
+/api-server
+/dist/
+
+# 运行时数据（端点配置 SQLite / 管理员配置）
+/data/
+*.db
+*.db-shm
+*.db-wal
+
+# 日志
+*.log
+logs/
+
+# 环境变量（含管理员凭据，切勿提交）
+.env
+
+# 编辑器
+.DS_Store
+.idea/
+.vscode/

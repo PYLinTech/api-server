@@ -1,0 +1,20 @@
+# 构建上下文排除项：防止密钥/数据/产物进镜像
+# 注意：dist/ 需保留（Dockerfile COPY 预编译二进制），排除的是 dist 下的临时文件
+.env
+*.env
+data/
+dist/*.tar.gz
+dist/*.zip
+*.db
+*.db-*
+*.log
+.git/
+.gitignore
+.github/
+Dockerfile
+docker-compose.yml
+install.sh
+build.sh
+docker-build.sh
+README.md
+*.md

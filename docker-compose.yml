@@ -1,0 +1,32 @@
+# api-server 一键部署：Tengo 云函数 API 端点服务
+# 用法：
+#   1. ./install.sh（推荐，内置同款配置）或 docker compose up -d
+#   2. 浏览器打开 http://localhost:8081/login 登录管理面板
+#   3. 首次部署通过 ADMIN_USER / ADMIN_PASSWORD 环境变量初始化管理员（程序生成密码），
+#      也可交互输入；写数据卷 .env
+# 镜像默认 pylintech/api-server:latest，可通过 APISERVER_IMAGE / APISERVER_TAG 覆盖
+# 数据存于 Docker 命名卷（默认 api-server-data），可通过 APISERVER_DATA_VOLUME 修改，不依赖宿主目录
+name: api-server
+
+services:
+  api-server:
+    image: ${APISERVER_IMAGE:-pylintech/api-server}:${APISERVER_TAG:-latest}
+    container_name: api-server
+    ports:
+      - "8081:8081"   # 管理面板 + API 端点服务
+    environment:
+      ADMIN_USER: ${ADMIN_USER:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+    volumes:
+      - api-server-data:/app/data   # 命名卷持久化 .env 与 api.db（端点配置）
+    networks:
+      - api-server-net
+    restart: unless-stopped
+
+volumes:
+  api-server-data:
+    name: ${APISERVER_DATA_VOLUME:-api-server-data}
+
+networks:
+  api-server-net:
+    name: api-server-net   # 固定网络名，不带 compose 项目名前缀
